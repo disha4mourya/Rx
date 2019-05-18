@@ -13,6 +13,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
+    Disposable disposable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         return new Observer<String>() {
             @Override
             public void onSubscribe(Disposable d) {
-
+                disposable = d;
             }
 
             @Override
@@ -53,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Observable<String> getFlavorObservable() {
-        return Observable.just("Chocolate","Vanilla");
+        return Observable.just("Chocolate", "Vanilla");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposable.dispose();
     }
 }
