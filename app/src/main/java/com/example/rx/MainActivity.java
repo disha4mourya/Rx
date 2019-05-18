@@ -9,6 +9,7 @@ import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +28,12 @@ public class MainActivity extends AppCompatActivity {
         flavorsObservable
                 .observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
+                .filter(new Predicate<String>() {
+                    @Override
+                    public boolean test(String s) throws Exception {
+                        return s.contains("Choco");
+                    }
+                })
                 .subscribe(flavorsObserver);
     }
 
